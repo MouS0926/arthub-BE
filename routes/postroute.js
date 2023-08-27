@@ -48,6 +48,13 @@ postroute.get('/', async (req, res) => {
       filterOptions.date = { $gte: new Date(req.query.date) };
     }
 
+
+    const searchQuery = req.query.search; 
+    if (searchQuery) {
+     
+      filterOptions.title = { $regex: searchQuery, $options: 'i' };
+    }
+
     const sorting = {};
     if (req.query.sortBy === 'rating') {
         sorting.rating = req.query.sortOrder === 'asc' ? 1 : -1;
