@@ -10,7 +10,9 @@ comments : Number,
 price:Number,
 image:String,
 publisher:String,
-category:String
+category:String,
+userId:String,
+username:String
 },
 {
     versionKey:false

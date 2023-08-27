@@ -33,7 +33,9 @@ userroute.post("/login",async(req,res)=>{
         if(user){
             bcrypt.compare(password,user.password,(err,result)=>{
                 if(result){
-                   const token=jwt.sign({payload:user.email},"masai") 
+                    const token=jwt.sign( { userId: user._id,user:user.username },"masai") 
+                //    const token=jwt.sign({payload:user.email},"masai") 
+                  
                    res.status(201).send({"msg":"Login Successfully",token,username:user.username})
                 }
                 else{

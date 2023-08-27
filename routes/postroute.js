@@ -7,9 +7,9 @@ const {Post}=require("../model/Post")
 
 
 postroute.post("/add",auth,async(req,res)=>{
-    const token= req.headers.authorization?.split(" ")[1]
-    const decoder=jwt.verify(token,"masai")
-       const email=decoder.payload
+    // const token= req.headers.authorization?.split(" ")[1]
+    // const decoder=jwt.verify(token,"masai")
+    //    const email=decoder.payload
        
 try {
      

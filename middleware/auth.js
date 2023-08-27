@@ -14,10 +14,15 @@ const auth=async(req,res,next)=>{
         
        
          const decoder=jwt.verify(token,"masai")
+         console.log(decoder);
          if(decoder)
-          
-        next()
-        return
+          {
+            req.body.userId=decoder.userId
+            req.body.username=decoder.user
+            next()
+          }
+        
+       
          }
          else{
           res.send("please login!")
