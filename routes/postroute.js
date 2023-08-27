@@ -82,19 +82,31 @@ postroute.get('/', async (req, res) => {
     }
   });
 
-postroute.patch("/update/:id",auth,async(req,res)=>{
-    const {id}=req.params
+postroute.patch("/update/:postid",auth,async(req,res)=>{
+    const {postid}=req.params
+    const post=await Post.findOne({_id:postid})
+    console.log(post);
     try {
-        const post=await Post.findById(id)
-        if(post){
-           await Post.findByIdAndUpdate(id,req.body)
-            res.status(200).send("post uppdated succesfully")
+       
+        if(req.body.userId!=post.userId){
+          res.status(200).send({"msg":"you are not authorized!"})
         }
+
+        else{
+          await Post.findByIdAndUpdate({_id:postid},req.body)
+           res.status(200).send({"msg":`post with id ${postid} is updated`})
+       }
     } catch (error) {
         console.log(error)
-        res.status(400).send("error")
+        res.status(400).send({"err":error})
     }
 })
+
+
+
+
+
+
 postroute.delete("/delete/:id",auth,async(req,res)=>{
     const {id}=req.params
     try {
