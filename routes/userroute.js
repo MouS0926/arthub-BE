@@ -37,11 +37,14 @@ userroute.post("/login",async(req,res)=>{
                    res.status(201).send({"msg":"Login Successfully",token})
                 }
                 else{
-                    res.status(401).send("Something is wrong")  
+                    res.status(401).send("Invalid credentials")  
                 }
             })
             
 
+        }
+        else{
+            res.status(401).send("Invalid credentials")  
         }
     } catch (error) {
         console.log(error)
