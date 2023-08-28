@@ -82,6 +82,18 @@ postroute.get('/', async (req, res) => {
     }
   });
 
+  postroute.get("/userpost",auth,async(req,res)=>{
+  try {
+    const post =await Post.find({userId:req.body.userId})
+    
+    res.status(200).send(post)
+  } catch (error) {
+   
+    res.status(400).send({"error": error});
+  }
+})
+
+
 postroute.patch("/update/:postid",auth,async(req,res)=>{
     const {postid}=req.params
     const post=await Post.findOne({_id:postid})
