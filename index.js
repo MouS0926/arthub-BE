@@ -9,6 +9,7 @@ app.use(express.json())
 app.use(cors())
 app.use("/users",userroute)
 app.use("/posts",postroute)
+
 app.listen(8080,async()=>{
     try {
         await connection

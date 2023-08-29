@@ -19,6 +19,7 @@ const auth=async(req,res,next)=>{
           {
             req.body.userId=decoder.userId
             req.body.username=decoder.user
+            req.body.publisher=decoder.user
             next()
           }
         
