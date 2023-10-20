@@ -12,8 +12,11 @@ postroute.post("/add",auth,async(req,res)=>{
     //    const email=decoder.payload
        
 try {
-     
-       const newpost= new Post(req.body) 
+  const postData = req.body;
+  if (postData.rating) {
+    postData.rating = parseFloat(postData.rating);
+}
+       const newpost= new Post(postData) 
        await newpost.save()
         res.status(200).send("Post added successfully")
      
