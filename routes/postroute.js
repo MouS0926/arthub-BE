@@ -14,7 +14,7 @@ postroute.post("/add",auth,async(req,res)=>{
 try {
   const postData = req.body;
   if (postData.rating) {
-    postData.rating = parseFloat(postData.rating);
+    postData.rating = Number(postData.rating);
 }
        const newpost= new Post(postData) 
        await newpost.save()
@@ -136,6 +136,24 @@ postroute.delete("/delete/:id",auth,async(req,res)=>{
         
     }
 })
+
+
+postroute.get("/post/:id",auth, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    res.status(200).send(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
 
 
 module.exports=postroute

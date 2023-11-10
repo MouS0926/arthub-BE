@@ -2,11 +2,11 @@ const express=require("express")
 const { connection } = require("./db")
 const {userroute} = require("./routes/userroute")
 const app=express()
-const cors=require("cors")
+const cors=require("cors") //cors
 const postroute = require("./routes/postroute")
 
 app.use(express.json())
-app.use(cors())
+app.use(cors()) //cors
 app.use("/users",userroute)
 app.use("/posts",postroute)
 
