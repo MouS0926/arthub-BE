@@ -14,7 +14,7 @@ const auth=async(req,res,next)=>{
         
        
          const decoder=jwt.verify(token,"masai")
-         console.log(decoder);
+        //  console.log(decoder);
          if(decoder)
           {
             req.body.userId=decoder.userId
@@ -26,7 +26,7 @@ const auth=async(req,res,next)=>{
        
          }
          else{
-          res.send("please login!")
+          res.send("Invalid token. Please log in again!")
          }
     } catch (error) {
       console.log(error)

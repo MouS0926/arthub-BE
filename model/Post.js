@@ -6,13 +6,26 @@ const newschema=mongoose.Schema({
 title: String,
 date :String,
 rating : String,
-comments : Number,
+comments: [
+    {
+      userId: String,
+      username: String,
+      comment: String,
+    },
+  ],
 price:Number,
 image:String,
 publisher:String,
 category:String,
 userId:String,
-username:String
+username:String,
+likecount: Number,
+likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ]
 },
 {
     versionKey:false

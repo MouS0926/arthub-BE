@@ -100,7 +100,7 @@ postroute.get('/', async (req, res) => {
 postroute.patch("/update/:postid",auth,async(req,res)=>{
     const {postid}=req.params
     const post=await Post.findOne({_id:postid})
-    console.log(post);
+    // console.log(post);
     try {
        
         if(req.body.userId!=post.userId){
@@ -138,7 +138,7 @@ postroute.delete("/delete/:id",auth,async(req,res)=>{
 })
 
 
-postroute.get("/post/:id",auth, async (req, res) => {
+postroute.get("/post/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -149,6 +149,72 @@ postroute.get("/post/:id",auth, async (req, res) => {
     }
 
     res.status(200).send(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error here");
+  }
+});
+
+
+
+postroute.post("/like/:postId", auth, async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    // Check if the user has already liked the post
+    const likedIndex = post.likes.indexOf(req.body.userId);
+
+    if (likedIndex === -1) {
+      // User has not liked the post, so add the like
+      post.likes.push(req.body.userId);
+      post.likecount = post.likes.length;
+
+      await post.save();
+
+      res.status(200).send({ msg: "Post liked", likecount: post.likecount });
+    } else {
+      // User has already liked the post, so remove the like
+      post.likes.splice(likedIndex, 1);
+      post.likecount = post.likes.length;
+
+      await post.save();
+
+      res.status(200).send({ msg: "Post unliked", likecount: post.likecount });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+postroute.post("/comment/:postId", auth, async (req, res) => {
+  const { postId } = req.params;
+  const { comment } = req.body;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    // Add the user's comment to the post
+    post.comments.push({
+      userId: req.body.userId,
+      username: req.body.username,
+      comment: comment,
+    });
+
+    await post.save();
+
+    res.status(200).send({ msg: "Comment added successfully", comments: post.comments });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
