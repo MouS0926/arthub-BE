@@ -5,6 +5,8 @@ const { User } = require("../model/User")
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
 const { Blacklist } = require("../middleware/Blocklist")
+const { Post } = require("../model/Post")
+const { auth } = require("../middleware/auth")
 const userroute=express.Router()
 
 userroute.post("/register",async(req,res)=>{
@@ -66,5 +68,47 @@ userroute.get("/logout",async(req,res)=>{
     
    
 })
+
+//get all users/creators
+userroute.get("/creators",async(req,res)=>{
+    
+    try {
+        const allusers=await User.find()
+        res.status(200).send(allusers)  
+    } catch (error) {
+        console.log(error)
+        res.status(401).send(error)  
+    }
+    
+   
+})
+
+
+//particular user post route without authentication
+userroute.get("/creators/post/:userId",async(req,res)=>{
+    try {
+        const {userId}=req.params
+      const allposts =await Post.find({userId:userId})
+      
+      res.status(200).send(allposts)
+    } catch (error) {
+     
+      res.status(400).send({"error": error});
+    }
+  })
+
+//   userroute.patch("/user/:userId",auth,async(req,res)=>{
+//     try {
+//         const {userId}=req.params
+//       const updatedpost =await User.findByIdAndUpdate({_id:userId},req.body)
+      
+//       res.status(200).send("post is updated",updatedpost)
+//     } catch (error) {
+     
+//       res.status(400).send({"error": error});
+//     }
+//   })
+
+
 
 module.exports={userroute}
